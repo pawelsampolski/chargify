@@ -5,3 +5,15 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+Product.destroy_all
+
+products_list = [
+  [ "Bronze Box", 19.99 ],
+  [ "Silver Box", 49.00 ],
+  [ "Gold Box", 99.00 ]
+]
+
+products_list.each do |title, price|
+  Product.create( title: title, price: price )
+end
