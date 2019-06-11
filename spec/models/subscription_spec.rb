@@ -7,8 +7,8 @@ RSpec.describe Subscription, type: :model do
   it { should belong_to(:product) }
 
   # Validation test
-  it { should validate_presence_of(:cc_cvv) }
-  it { should validate_presence_of(:cc_expiration_date) }
-  it { should validate_presence_of(:cc_billing_zip_code) } 
+  it { should validate_presence_of(:token) }
+  #it { should validate_presence_of(:cc_expiration_date) }
+  #it { should validate_presence_of(:cc_billing_zip_code) } 
 
 end

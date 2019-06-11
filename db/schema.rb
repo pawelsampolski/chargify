@@ -30,9 +30,7 @@ ActiveRecord::Schema.define(version: 2019_06_03_163554) do
   end
 
   create_table "subscriptions", force: :cascade do |t|
-    t.integer "cc_cvv", limit: 3
-    t.date "cc_expiration_date"
-    t.string "cc_billing_zip_code"
+    t.string "token"
     t.integer "customer_id"
     t.integer "product_id"
     t.datetime "created_at", null: false

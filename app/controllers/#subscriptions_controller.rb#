@@ -19,8 +19,7 @@ class SubscriptionsController < ApplicationController
     @subscription = FakepayService.new(
       cc_params[:cc_number], cc_params[:cc_cvv], cc_params[:cc_expiration_date], cc_params[:cc_billing_zip_code], cc_params[:product_id], @customer.id
     ).do_payment
-    
-    
+        
     json_response(@subscription, :created)
   end
   
