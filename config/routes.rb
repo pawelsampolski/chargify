@@ -1,9 +1,8 @@
 Rails.application.routes.draw do
 
+  resources :products
   resources :customers do 
-    resources :subscriptions do
-      resources :products
-    end
+    resources :subscriptions 
   end
   
 end
