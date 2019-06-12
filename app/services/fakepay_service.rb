@@ -1,40 +1,36 @@
 class FakepayService
 
-  attr_reader :product_id, :customer_id
-  
-  def initialize(cc_number, cc_cvv, cc_expiration_date, cc_billing_zip_code, product_id, customer_id)
-    @cc_number = cc_number
-    @cc_cvv = cc_cvv
-    @cc_expiration_date = cc_expiration_date
-    @cc_billing_zip_code = cc_billing_zip_code
-    @amount = Product.find(product_id).price
-    @product_id = product_id
-    @customer_id = customer_id  
+  def self.do_payment(amount, cc_number, cc_cvv, cc_expiration_date, cc_billing_zip_code)
+    FakepayService.success(Fakepay::Connection.new(FakepayService.create_payment_json_body(amount, cc_number, cc_cvv, cc_expiration_date, cc_billing_zip_code)).send_request)
   end
 
-  def do_payment
-
-    fakepay = Fakepay::Connection.new(@cc_number, @cc_cvv, @cc_expiration_date, @cc_billing_zip_code, @amount)
-    response = fakepay.send_request
-
-    if response['success']
-      { subscription: create_subscription(response['token']) }
-    else
-      { code: response['error_code'] }
-    end
+  def self.renewal_payment(amount, token)
+    FakepayService.success(Fakepay::Connection.new(FakepayService.renewal_payment_json_body(amount, token)).send_request)
   end
 
   private
 
-  def create_subscription(token)
-
-    subscription = Subscription.new(
-      product_id: product_id,
-      customer_id: customer_id,
-      token: token 
-    )
-    
-    subscription.save
-    subscription
+  def self.success(response)
+    raise response['error_code'].to_s unless response['success']
+    response['token']
   end
+
+  def self.create_payment_json_body (amount, cc_number, cc_cvv, cc_expiration_date, cc_billing_zip_code)
+    {
+        amount: amount,
+        card_number: cc_number,
+        cvv: cc_cvv,
+        expiration_month: Date.parse(cc_expiration_date).month.to_s,
+        expiration_year: Date.parse(cc_expiration_date).year.to_s,
+        zip_code: cc_billing_zip_code
+    }.to_json
+  end
+
+  def self.renewal_payment_json_body (amount, token)
+    {
+        amount: amount,
+        token: token,
+    }.to_json
+  end
+
 end

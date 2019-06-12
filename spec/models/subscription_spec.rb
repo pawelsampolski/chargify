@@ -8,7 +8,5 @@ RSpec.describe Subscription, type: :model do
 
   # Validation test
   it { should validate_presence_of(:token) }
-  #it { should validate_presence_of(:cc_expiration_date) }
-  #it { should validate_presence_of(:cc_billing_zip_code) } 
 
 end

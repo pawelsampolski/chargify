@@ -31,6 +31,9 @@ ActiveRecord::Schema.define(version: 2019_06_03_163554) do
 
   create_table "subscriptions", force: :cascade do |t|
     t.string "token"
+    t.boolean "active"
+    t.date "subscribe_date"
+    t.date "expiration_date"
     t.integer "customer_id"
     t.integer "product_id"
     t.datetime "created_at", null: false
